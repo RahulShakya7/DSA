@@ -37,6 +37,6 @@ public class week7 {
     public static void main(String[] args){
       // inserting the given grid 
       int[][] A = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };
-      System.out.println("The number of different pathways is" + pathwithTiger(A));
+      System.out.println("The number of different pathways is " + pathwithTiger(A));
     }
   }
