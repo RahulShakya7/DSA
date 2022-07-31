@@ -2,6 +2,7 @@ package week1;
 
 import week1.SingelyLinkedList.Node;
 
+
 public class week1 {
 
      SingelyLinkedList[] arr;

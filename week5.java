@@ -21,7 +21,6 @@ public class week5 {
                 }
             }
         }
-        System.out.println("-----");
 
         // for (int i = 0; i < subset.length; i++) {
         // System.out.println(subset[i]);

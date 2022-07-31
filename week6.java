@@ -1,108 +1,188 @@
-class Node {
-    public int  data;
-    public Node next;
+import java.util.*;
 
-    Node() {
-        this.data = 0;
-        this.next = null;
-    }
+class week6 {
 
-    Node(int data) {
-        this.data = data;
-        this.next = null;
-    }
+	// Function to check if the
+	// assignment of digits to
+	// characters is possible
+	public static boolean isSolvable(String[] words,
+									String result)
+	{
+		// Stores the value
+		// assigned to alphabets
+		int mp[] = new int[26];
 
-    public void print() {
-        System.out.print(this.data);
-    }
+		// Stores if a number
+		// is assigned to any
+		// character or not
+		int used[] = new int[10];
+
+		// Stores the sum of position
+		// value of a character
+		// in every string
+		int Hash[] = new int[26];
+
+		// Stores if a character
+		// is at index 0 of any
+		// string
+		int CharAtfront[] = new int[26];
+
+		Arrays.fill(mp, -1);
+		Arrays.fill(used, 0);
+		Arrays.fill(Hash, 0);
+		Arrays.fill(CharAtfront, 0);
+
+		// Stores the string formed
+		// by concatenating every
+		// occurred character only
+		// once
+		StringBuilder uniq = new StringBuilder();
+
+		// Iterator over the array,
+		// words
+		for (String word : words) {
+
+			// Iterate over the string,
+			// word
+			for (int i = 0; i < word.length(); i++) {
+
+				// Stores the character
+				// at ith position
+				char ch = word.charAt(i);
+
+				// Update Hash[ch-'A]
+				Hash[ch - 'A'] += (int)Math.pow(
+					10, word.length() - i - 1);
+
+				// If mp[ch-'A'] is -1
+				if (mp[ch - 'A'] == -1) {
+
+					mp[ch - 'A'] = 0;
+					uniq.append((char)ch);
+				}
+
+				// If i is 0 and word
+				// length is greater
+				// than 1
+				if (i == 0 && word.length() > 1) {
+
+					CharAtfront[ch - 'A'] = 1;
+				}
+			}
+		}
+
+		// Iterate over the string result
+		for (int i = 0; i < result.length(); i++) {
+
+			char ch = result.charAt(i);
+
+			Hash[ch - 'A'] -= (int)Math.pow(
+				10, result.length() - i - 1);
+
+			// If mp[ch-'A] is -1
+			if (mp[ch - 'A'] == -1) {
+				mp[ch - 'A'] = 0;
+				uniq.append((char)ch);
+			}
+
+			// If i is 0 and length of
+			// result is greater than 1
+			if (i == 0 && result.length() > 1) {
+				CharAtfront[ch - 'A'] = 1;
+			}
+		}
+
+		Arrays.fill(mp, -1);
+
+		// Recursive call of the function
+		return solve(uniq, 0, 0, mp, used, Hash,
+					CharAtfront);
+	}
+
+	// Auxiliary Recursive function
+	// to perform backtracking
+	public static boolean solve(
+		StringBuilder words, int i,
+		int S, int[] mp, int[] used,
+		int[] Hash,
+		int[] CharAtfront)
+	{
+		// If i is word.length
+		if (i == words.length())
+
+			// Return true if S is 0
+			return (S == 0);
+
+		// Stores the character at
+		// index i
+		char ch = words.charAt(i);
+
+		// Stores the mapped value
+		// of ch
+		int val = mp[words.charAt(i) - 'A'];
+
+		// If val is -1
+		if (val != -1) {
+
+			// Recursion
+			return solve(words, i + 1,
+						S + val * Hash[ch - 'A'],
+						mp, used,
+						Hash, CharAtfront);
+		}
+
+		// Stores if there is any
+		// possible solution
+		boolean x = false;
+
+		// Iterate over the range
+		for (int l = 0; l < 10; l++) {
+
+			// If CharAtfront[ch-'A']
+			// is true and l is 0
+			if (CharAtfront[ch - 'A'] == 1
+				&& l == 0)
+				continue;
+
+			// If used[l] is true
+			if (used[l] == 1)
+				continue;
+
+			// Assign l to ch
+			mp[ch - 'A'] = l;
+
+			// Marked l as used
+			used[l] = 1;
+
+			// Recursive function call
+			x |= solve(words, i + 1,
+					S + l * Hash[ch - 'A'],
+					mp, used, Hash, CharAtfront);
+
+			// Backtrack
+			mp[ch - 'A'] = -1;
+
+			// Unset used[l]
+			used[l] = 0;
+		}
+
+		// Return the value of x;
+		return x;
+	}
+
+	// Driver Code
+	public static void main(String[] args)
+	{
+		// Input
+		String[] arr
+			= { "THIS", "IS", "TOO" };
+		String S = "FUNNY";
+
+		// Function Call
+		if (isSolvable(arr, S))
+			System.out.println("Yes");
+		else
+			System.out.println("No");
+	}
 }
 
-class LinkedList {
-    public Node head;
-    private Node tail;
-
-    LinkedList() {
-        this.head = null;
-        this.tail = null;
-    }
-
-    LinkedList(int arr[]) {
-        this.head = new Node(arr[0]);
-        this.tail = this.head;
-
-        for (int i = 1; i < arr.length; i ++) {
-            this.tail.next = new Node(arr[i]);
-            this.tail = this.tail.next;
-        }
-    }
-
-    public void sortAndMergeWith(LinkedList l) {
-        Node n1 = l.head;
-
-        if (this.head == null) {
-            this.head = new Node(l.head.data);
-            this.tail = this.head;
-            n1 = n1.next;
-        }
-
-        for (; n1 != null; n1 = n1.next) {
-            if (n1.data < this.head.data) {
-                Node tmp = this.head;
-                this.head = new Node(n1.data);
-                this.head.next = tmp;
-                continue;
-            }
-
-            for (Node n2 = this.head; n2 != null; n2 = n2.next) {
-                if (n2.next == null) {
-                    n2.next = new Node(n1.data);
-                    break;
-                }
-
-                if (n1.data < n2.next.data) {
-                    Node tmp = n2.next;
-                    n2.next  = new Node(n1.data);
-                    n2.next.next = tmp;
-                    break;
-                }
-            }
-        }
-    }
-
-    public void print() {
-        for (Node node = this.head; node != null; node = node.next) {
-            node.print();
-            System.out.print(node + " ");
-        }
-    }
-}
-
-class Main {
-    static LinkedList sortAndMergeKLists(LinkedList arr[]) {
-        LinkedList ret = new LinkedList();
-
-        for (int i = 0; i < arr.length; i ++)
-            ret.sortAndMergeWith(arr[i]);
-
-        return ret;
-    }
-
-    // public static double findMedian(int arr[]){
-    //     LinkedList d = sortAndMergeKLists(a);
-    //     // check for even case
-    //     if (n % 2 != 0)
-    //         return (double)a[n / 2];
- 
-    //     return (double)(a[(n - 1) / 2] + a[n / 2]) / 2.0;
-    // }
-
-    public static void main(String[] args) {
-        LinkedList[] a = {
-            new LinkedList(new int[] {9, 2, 7}),
-            new LinkedList(new int[] {3, 4, 5}),
-            new LinkedList(new int[] {8, 1, 6}),
-        };
-        LinkedList d = sortAndMergeKLists(a);
-        d.print();
-    }
-}
