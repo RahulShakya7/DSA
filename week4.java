@@ -17,10 +17,9 @@ public class week4 {
         int i;
         int totalContainers = 0;
 
-        // initializing an array
         int array[] = { 5, 2, 2, 2, 4, 6 };
 
-        // sorting the array
+        // array for sorting
         sortArray(array);
 
         int prevValue = 0;

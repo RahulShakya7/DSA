@@ -11,9 +11,6 @@ public class week5 {
                             && !visited.contains(target.charAt(i) + "")) {
                         visited += target.charAt(i);
 
-                        // System.out.println(target.charAt(i));
-                        // System.out.println(set[j]);
-
                         if (ans <= j + 1) {
                             ans++;
                         }
@@ -22,9 +19,6 @@ public class week5 {
             }
         }
 
-        // for (int i = 0; i < subset.length; i++) {
-        // System.out.println(subset[i]);
-        // }
         System.out.println(ans);
     }
 

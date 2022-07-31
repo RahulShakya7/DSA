@@ -5,9 +5,7 @@ class week6 {
 	// Function to check if the
 	// assignment of digits to
 	// characters is possible
-	public static boolean isSolvable(String[] words,
-									String result)
-	{
+	public static boolean isSolvable(String[] words, String result){
 		// Stores the value
 		// assigned to alphabets
 		int mp[] = new int[26];
@@ -41,7 +39,6 @@ class week6 {
 		// Iterator over the array,
 		// words
 		for (String word : words) {
-
 			// Iterate over the string,
 			// word
 			for (int i = 0; i < word.length(); i++) {
